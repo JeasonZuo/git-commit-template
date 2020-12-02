@@ -95,8 +95,9 @@ then
   message="$message\n\n$footer"
 fi
 
-printf $message
+message=${printf $message}
 
-git commit -m "$message"
+echo message
+# git commit -m "$message"
 
 
