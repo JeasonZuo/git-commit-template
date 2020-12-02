@@ -68,14 +68,7 @@ done
 echo -n "Does this change affect any open issues? (press enter to skip): "
 read footer
 
-
-# message="$type($scope): $subject
-
-# $body
-
-# $footer
-# "
-
+# 拼接commit信息
 message=$type
 
 if [ "$scope" != "" ]
