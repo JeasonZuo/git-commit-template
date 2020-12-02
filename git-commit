@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ "$1" == "-a" ]
+then
+  git add .
+fi
+
 status=$(git status)
 result=$(echo $status | grep "Changes to be committed")
 
@@ -49,7 +54,7 @@ while true
 do
   if [ "$body" != "" ]
   then
-    echo -n "Another line? ([Y/N] default yes): "
+    echo -n "Enter another line? ([Y/n] default is yes): "
     read is_body
     case $is_body in
       [Nn]* )
