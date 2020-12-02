@@ -92,12 +92,9 @@ fi
 
 if [ "$footer" != "" ]
 then
-  message="$message\n\n$footer"
+  message="$message\n$footer"
 fi
 
-message=${printf $message}
-
-echo message
-# git commit -m "$message"
+git commit -m ${echo -e $message}"
 
 
