@@ -78,7 +78,7 @@ message=$type
 
 if [ "$scope" != "" ]
 then
-  message="$type($scope):$subject\n"
+  message="$type($scope): $subject\n"
 else
   message="$type:$subject\n"
 fi
