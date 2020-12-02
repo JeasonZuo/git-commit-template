@@ -77,9 +77,9 @@ while true
 done
 
 message="$type($scope): $subject
-\n
+
 $body
-\n
+
 $footer
 "
 
