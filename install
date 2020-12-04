@@ -1,20 +1,16 @@
-#!/bin/bash
-
-# 1. 检测是否安装git
 result=$(echo $status | grep "command not found")
 if [ "$result" != "" ]
 then
     echo -e "\033[31m Please install git \033[0m"
     exit 0
 fi
-# 2. 检测是否有/usr/local/bin目录 没有则创建
+
 BIN_DIR="/usr/local/bin/"
 GIT_FILE="/usr/local/bin/git"
 if [ ! -d "$BIN_DIR" ]; then
   mkdir "$BIN_DIR"
 fi
 
-# 3. 检测是否有~/bin/git文件是否存在 有则报错 没有创建
 if [ ! -f "$GIT_FILE" ]; then
   touch "$GIT_FILE"
   chmod +x "$GIT_FILE"
@@ -22,7 +18,4 @@ else
   echo -e "\033[31m The file $GIT_FILE exist \033[0m"
 fi
 
-# 4. 获取线上git文件内容，写入get文件
 curl https://raw.githubusercontent.com/JeasonZuo/git-commit-template/develop/git > $GIT_FILE
-
-# x. 创建一个配置文件，所有文件都在配置文件中配置
