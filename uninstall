@@ -1,1 +1,8 @@
 #!/bin/bash
+GIT_PATH=$(which git)
+if [[ "$GIT_PATH" = "/usr/local/bin/git" ]]; then
+  rm $GIT_PATH
+  echo 'Complete. The tool been removed.'
+else
+  echo "You didn't install the tool."
+fi

@@ -34,12 +34,12 @@ if [[ ! -f "$GIT_FILE" ]]; then
   elif [[ $OS == 1 ]];then
     sed -i "" "s#OriginGit=/usr/bin/git#OriginGit=$GIT_PATH#g" $GIT_FILE
   fi
-  echo "Complete"
+  echo "Complete."
 else
   echo -e "\033[31m The file $GIT_FILE existed. \033[0m"
 fi
 
 # 检查PATH
 if [[ ":${PATH}:" != *":/usr/local/bin:"* ]]; then
-  echo "/user/local/bin is not in your PATH."
+  echo "`/user/local/bin` is not in your PATH. Please check you PATH."
 fi

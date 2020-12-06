@@ -43,7 +43,7 @@ result=$(echo $status | grep "Changes to be committed")
 if [ "$result" == "" ]
 then
     echo -e "\033[31m No changes added to commit! \033[0m"
-    exit 0
+    exit $?
 fi
 # type
 echo "Select the type of change that you're committing:"
