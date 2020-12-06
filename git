@@ -9,7 +9,7 @@ IsQuite=0
 
 for Param in $@
 do
-  if [[ "$Param" == "--quiet" || "$Param" == "-q"]]; then
+  if [[ "$Param" == "--quiet" || "$Param" == "-q" ]]; then
     IsQuite=1
   elif [[ "$Param" == "-am" ]]; then
     NeedAdd=1
@@ -21,7 +21,7 @@ do
   fi
 done
 
-# 不是 git commit 或者携带参数 --quite(代表从编辑器提交
+# 不是 git commit 或者携带参数 --quite(代表从编辑器提交）
 if [[ $IsCommit == 0 || IsQuite == 1 ]]
 then
     $OriginGit $@
