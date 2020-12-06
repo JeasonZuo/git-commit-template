@@ -1,11 +1,4 @@
 #!/bin/bash
-
-
-# 查找git所在目录
-# if command -v git >/dev/null; then
-#   echo -e "\033[31m Please install Git. \033[0m"
-# fi
-
 GIT_PATH=$(which git)
 if [[ "$GIT_PATH" = "" ]]; then
   echo -e "\033[31m Please install Git. \033[0m"
