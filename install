@@ -28,7 +28,7 @@ if [[ ! -f "$GIT_FILE" ]]; then
   touch "$GIT_FILE"
   chmod +x "$GIT_FILE"
   # 下载脚本写入执行文件 /usr/local/bin/git
-  curl https://raw.githubusercontent.com/JeasonZuo/git-commit-template/develop/git > $GIT_FILE
+  curl https://raw.githubusercontent.com/JeasonZuo/git-commit-template/main/git > $GIT_FILE
   if [[ $OS == 0 ]]; then
     sed -i "s#OriginGit=/usr/bin/git#OriginGit=$GIT_PATH#g" $GIT_FILE
   elif [[ $OS == 1 ]];then
