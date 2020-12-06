@@ -5,23 +5,24 @@ OriginGit=/usr/bin/git
 NeedAdd=0;
 NeedMessage=0;
 IsCommit=0;
+IsQuite=0
 
 for Param in $@
 do
-    if [[ "$Param" == "-am" ]]
-    then
-        NeedAdd=1
-	NeedMessage=1
-    elif [[ "$Param" == "-m" ]]
-    then
-        NeedMessage=1
-    elif [[ "$Param" == "commit" ]]
-    then
-        IsCommit=1
-    fi
+  if [[ "$Param" == "--quiet" || "$Param" == "-q"]]; then
+    IsQuite=1
+  elif [[ "$Param" == "-am" ]]; then
+    NeedAdd=1
+    NeedMessage=1
+  elif [[ "$Param" == "-m" ]]; then
+    NeedMessage=1
+  elif [[ "$Param" == "commit" ]]; then
+    IsCommit=1
+  fi
 done
 
-if [[ $IsCommit == 0 ]]
+# 不是 git commit 或者携带参数 --quite(代表从编辑器提交
+if [[ $IsCommit == 0 || IsQuite == 1 ]]
 then
     $OriginGit $@
     exit $?
@@ -37,92 +38,92 @@ then
     fi
 fi
 
-  status=$(git status)
-  result=$(echo $status | grep "Changes to be committed")
-  if [ "$result" == "" ]
-  then
-      echo -e "\033[31m No changes added to commit! \033[0m"
-      exit 0
+status=$(git status)
+result=$(echo $status | grep "Changes to be committed")
+if [ "$result" == "" ]
+then
+    echo -e "\033[31m No changes added to commit! \033[0m"
+    exit 0
+fi
+# type
+echo "Select the type of change that you're committing:"
+item[0]='feat'
+item[1]='fix'
+item[2]='format' 
+item[3]='comment' 
+item[4]='test'
+select type in ${item[*]}
+do
+  if [ $type ]
+  then 
+    echo "Choose type is: $type"
+    break
   fi
-  # type
-  echo "Select the type of change that you're committing:"
-  item[0]='feat'
-  item[1]='fix'
-  item[2]='format' 
-  item[3]='comment' 
-  item[4]='test'
-  select type in ${item[*]}
-  do
-    if [ $type ]
-    then 
-      echo "Choose type is: $type"
-      break
-    fi
-  done
-  
-  # scope
-  echo -n "What is the scope of this change? (e.g. component or file name): (press enter to skip): "
-  read scope
-  
-  # subject
-  echo "Write a short, imperative tense description of the change (max 50 chars): "
-  # 需要判断是否小于50个字符
-  while true
-  do
-    read subject
-    if [ ${#subject} -gt 50 ]
-    then
-      echo -n 'The description exceeds 50 characters, please re-enter: '
-    else
-      break
-    fi
-  done
-  
-  # body
-  echo "Provide a longer description of the change: (press enter to skip)"
-  read body
-  while true 
-  do
-    if [ "$body" != "" ]
-    then
-      echo -n "Enter another line? ([Y/n] default is yes): "
-      read is_body
-      case $is_body in
-        [Nn]* )
-          break
-          ;;
-        * )
-          read new_body
-          body="$body\n$new_body"
-      esac
-    else
-      break
-    fi
-  done
-  
-  # footer
-  echo -n "Does this change affect any open issues? (press enter to skip): "
-  read footer
-  
-  # 拼接commit信息
-  message=$type
-  
-  if [ "$scope" != "" ]
+done
+
+# scope
+echo -n "What is the scope of this change? (e.g. component or file name): (press enter to skip): "
+read scope
+
+# subject
+echo "Write a short, imperative tense description of the change (max 50 chars): "
+# 需要判断是否小于50个字符
+while true
+do
+  read subject
+  if [ ${#subject} -gt 50 ]
   then
-    message="$type($scope): $subject\n"
+    echo -n 'The description exceeds 50 characters, please re-enter: '
   else
-    message="$type:$subject\n"
+    break
   fi
-  
+done
+
+# body
+echo "Provide a longer description of the change: (press enter to skip)"
+read body
+while true 
+do
   if [ "$body" != "" ]
   then
-    message="$message\n$body"
+    echo -n "Enter another line? ([Y/n] default is yes): "
+    read is_body
+    case $is_body in
+      [Nn]* )
+        break
+        ;;
+      * )
+        read new_body
+        body="$body\n$new_body"
+    esac
+  else
+    break
   fi
-  
-  if [ "$footer" != "" ]
-  then
-    message="$message\n\n$footer"
-  fi
-  
-  $OriginGit commit -m "$(echo -e $message)"   
+done
+
+# footer
+echo -n "Does this change affect any open issues? (press enter to skip): "
+read footer
+
+# 拼接commit信息
+message=$type
+
+if [ "$scope" != "" ]
+then
+  message="$type($scope): $subject\n"
+else
+  message="$type:$subject\n"
+fi
+
+if [ "$body" != "" ]
+then
+  message="$message\n$body"
+fi
+
+if [ "$footer" != "" ]
+then
+  message="$message\n\n$footer"
+fi
+
+$OriginGit commit -m "$(echo -e $message)"   
  

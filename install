@@ -1,28 +1,52 @@
 #!/bin/bash
 
-# 1. 检测是否安装git
-result=$(echo $status | grep "command not found")
-if [ "$result" != "" ]
-then
-    echo -e "\033[31m Please install git \033[0m"
-    exit 0
-fi
-# 2. 检测是否有/usr/local/bin目录 没有则创建
-BIN_DIR="/usr/local/bin/"
-GIT_FILE="/usr/local/bin/git"
-if [ ! -d "$BIN_DIR" ]; then
-  mkdir "$BIN_DIR"
+
+# 查找git所在目录
+# if command -v git >/dev/null; then
+#   echo -e "\033[31m Please install Git. \033[0m"
+# fi
+
+GIT_PATH=$(which git)
+if [[ "$GIT_PATH" = "" ]]; then
+  echo -e "\033[31m Please install Git. \033[0m"
+  exit $?
+elif [[ "$GIT_PATH" = "/usr/local/bin/git" ]]; then
+  echo -e "\033[31m Installed. \033[0m"
+  exit $?
 fi
 
-# 3. 检测是否有~/bin/git文件是否存在 有则报错 没有创建
-if [ ! -f "$GIT_FILE" ]; then
+# 确定操作系统
+if [[ "$(uname)" = "Linux" ]]; then
+  OS=0
+elif [[ "$(uname)" = "Darwin" ]]; then
+  OS=1
+else
+  echo "The bash doese not support $(uname) OS"
+fi
+
+# 检测 /usr/local/bin 目录
+if [[ ! -d /usr/local/bin ]]; then
+  mkdir /usr/local/bin
+fi
+
+# 修改 OriginGit参数
+GIT_FILE="/usr/local/bin/git"
+if [[ ! -f "$GIT_FILE" ]]; then
   touch "$GIT_FILE"
   chmod +x "$GIT_FILE"
+  # 下载脚本写入执行文件 /usr/local/bin/git
+  curl https://raw.githubusercontent.com/JeasonZuo/git-commit-template/develop/git > $GIT_FILE
+  if [[ $OS == 0 ]]; then
+    sed -i "s#OriginGit=/usr/bin/git#OriginGit=$GIT_PATH#g" $GIT_FILE
+  elif [[ $OS == 1 ]];then
+    sed -i "" "s#OriginGit=/usr/bin/git#OriginGit=$GIT_PATH#g" $GIT_FILE
+  fi
+  echo "Complete"
 else
-  echo -e "\033[31m The file $GIT_FILE exist \033[0m"
+  echo -e "\033[31m The file $GIT_FILE existed. \033[0m"
 fi
 
-# 4. 获取线上git文件内容，写入get文件
-curl https://raw.githubusercontent.com/JeasonZuo/git-commit-template/develop/git > $GIT_FILE
-
-# x. 创建一个配置文件，所有文件都在配置文件中配置
+# 检查PATH
+if [[ ":${PATH}:" != *":/usr/local/bin:"* ]]; then
+  echo "/user/local/bin is not in your PATH."
+fi
