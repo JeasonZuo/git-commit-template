@@ -1,3 +1,9 @@
+## 安装
+/bin/bash -c "$(curl https://raw.githubusercontent.com/JeasonZuo/git-commit-template/main/install)"
+## 卸载
+/bin/bash -c "$(curl https://raw.githubusercontent.com/JeasonZuo/git-commit-template/main/uninstall)"
+
+============= 舍弃 =============
 # git-commit-template
 
 git commit message 规范参考 https://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html
