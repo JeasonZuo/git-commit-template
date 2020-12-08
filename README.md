@@ -1,11 +1,16 @@
-## 安装
-/bin/bash -c "$(curl https://raw.githubusercontent.com/JeasonZuo/git-commit-template/main/install)"
-## 卸载
-/bin/bash -c "$(curl https://raw.githubusercontent.com/JeasonZuo/git-commit-template/main/uninstall)"
-
-============= 舍弃 =============
 # git-commit-template
+### 简介
+本工具通过在/usr/local/bin中创建git文件，对git命令进行过滤，只影响 git commit 命令
+在终端运行使用 git commit 或 git commit -am
 
+### 安装
+/bin/bash -c "$(curl https://gitee.com/JeasonZuo/git-commit-template/raw/main/install)"
+### 卸载
+/bin/bash -c "$(curl https://gitee.com/JeasonZuo/git-commit-template/raw/main/uninstall)"
+
+将以上命令粘贴至终端
+
+### git commit 规范
 git commit message 规范参考 https://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html
 
 ```
@@ -15,22 +20,6 @@ git commit message 规范参考 https://www.ruanyifeng.com/blog/2016/01/commit_m
 // 空一行
 <footer>
 ```
-
-本项目是一个创建标准 git commit message 的shell脚本
-
-## 使用方法：
-### 安装
-1. 直接下载git-commit文件放到项目中，与.get文件夹同级，一般是项目根目录
-2. 可以修改文件中的item数组配置type类型
-
-### 使用
-`./git-commit -a` 等于 `git commit -am`
-
-`./git-commit` 等于 `git commit -m`
-
-MacOS & Linux 可直接运行脚本
-Windows可通过Git Bash运行脚本
-
 ### 其他解决方案
 https://github.com/commitizen/cz-cli （需要安装NPM）
 
